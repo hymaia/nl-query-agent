@@ -7,6 +7,7 @@ Agent de requêtage en langage naturel sur AWS Glue Data Catalog, propulsé par 
 Outils à installer :
 - uv version >= 0.5.7
 - Python version 3.13
+- Terraform version >= 1.15.1
 - Docker
 - kubectl
 - helm version >= 3.x
@@ -52,6 +53,43 @@ uv run pytest
 
 ## Déployer
 
+### Prérequis AWS
+
+Avant le premier déploiement, activez le modèle Anthropic Claude Sonnet dans la console AWS Bedrock → Model access, ou via AWS CLI :
+
+```bash
+aws bedrock put-foundation-model-entitlement \
+  --model-id anthropic.claude-sonnet-4-5 \
+  --region eu-west-1
+```
+
+### Déployer l'infra manuellement
+
+Authentifiez-vous à votre compte AWS et lancez ces commandes :
+
+```bash
+cd infra
+terraform init
+terraform plan
+terraform apply
+```
+
+Le `terraform apply` génère automatiquement le fichier `helm/values.yaml` avec les valeurs de l'infrastructure (URL ECR, ARN du role IAM, etc.).
+
+Si besoin vous pouvez renseigner les variables terraform dans un fichier `infra/terraform.tfvars` :
+
+```hcl
+data_platform_role_name = "<DATA_PLATFORM_ROLE_NAME>"
+glue_database           = "<GLUE_DATABASE>"
+athena_output_bucket    = "<ATHENA_OUTPUT_BUCKET>"
+athena_workgroup        = "<ATHENA_WORKGROUP>"
+ingress_host            = "<INGRESS_HOST>"
+certificate_arn         = "<CERTIFICATE_ARN>"
+github_org              = "<GITHUB_ORG>"
+```
+
+**> ⚠️ Ne commitez pas `infra/terraform.tfvars`, il n'est que pour vous !!**
+
 ### CI/CD
 
 À chaque commit sur `main`, GitHub Actions :
@@ -75,14 +113,6 @@ L'image est buildée et poussée automatiquement sur ECR à chaque push sur `mai
 ### Déployer sur Kubernetes via ArgoCD
 
 La branche orpheline `env/dev` contient la ressource ArgoCD `dev-argo-app.yaml` qui pointe sur le chart Helm de `main`. ArgoCD se synchronise automatiquement à chaque mise à jour de cette branche.
-
-Pour bootstrapper ArgoCD la première fois :
-
-```bash
-git fetch origin env/dev
-git checkout env/dev
-kubectl apply -f dev-argo-app.yaml -n argocd
-```
 
 ### Vérifier le déploiement
 

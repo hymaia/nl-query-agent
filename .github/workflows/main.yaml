@@ -10,8 +10,44 @@ env:
   ECR_REPOSITORY: nl-sql-agent
 
 jobs:
+  # ============================================================
+  # TERRAFORM
+  # ============================================================
+  terraform:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::<ACCOUNT_ID>:role/<GITHUB_ACTIONS_ROLE>
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.15.1"
+
+      - name: Terraform init
+        working-directory: infra
+        run: terraform init
+
+      - name: Terraform apply
+        working-directory: infra
+        run: terraform apply -auto-approve
+
+  # ============================================================
+  # BUILD & PUSH
+  # ============================================================
   build-and-push:
     runs-on: ubuntu-latest
+    needs: terraform
     permissions:
       id-token: write
       contents: write
@@ -44,7 +80,7 @@ jobs:
         run: |
           git fetch origin env/dev
           git checkout env/dev
-          sed -i "s|tag:.*|tag: \"$IMAGE_TAG\"|" dev-argo-app.yaml
+          sed -i "s/tag:.*/tag: \"$IMAGE_TAG\"/" dev-argo-app.yaml
           git config user.email "ci@github.com"
           git config user.name "GitHub Actions"
           git add dev-argo-app.yaml

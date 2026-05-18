@@ -54,3 +54,7 @@ Thumbs.db
 
 # Kubernetes / Helm
 *.kubeconfig
+
+infra/terraform.tfvars
+infra/.terraform/
+infra/.terraform.lock.hcl
