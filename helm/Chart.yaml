@@ -1,0 +1,6 @@
+apiVersion: v2
+name: nl-sql-agent
+description: Natural Language Query Agent — FastAPI + Bedrock Claude Sonnet + LangGraph
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
