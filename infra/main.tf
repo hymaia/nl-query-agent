@@ -45,10 +45,6 @@ resource "aws_ecr_lifecycle_policy" "app" {
 # Bedrock
 # Note : l'activation du modèle Anthropic Claude Sonnet se fait
 # manuellement dans la console AWS Bedrock → Model access,
-# ou via AWS CLI :
-# aws bedrock put-foundation-model-entitlement \
-#   --model-id anthropic.claude-sonnet-4-5 \
-#   --region eu-west-1
 # ==============================================================
 
 # ==============================================================
