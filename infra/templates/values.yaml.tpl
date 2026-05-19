@@ -12,6 +12,7 @@ serviceAccount:
   iamRoleArn: "${pod_iam_role_arn}"
   automountToken: true
   annotations: {}
+  name: "nl-query-agent"
 
 aws:
   region: "${aws_region}"

@@ -12,6 +12,7 @@ serviceAccount:
   iamRoleArn: "arn:aws:iam::662195598891:role/hyma-mds-nl-query-agent-role"
   automountToken: true
   annotations: {}
+  name: "nl-query-agent"
 
 aws:
   region: "eu-west-1"
