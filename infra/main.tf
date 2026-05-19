@@ -118,28 +118,9 @@ resource "aws_iam_role" "github_actions" {
   }
 }
 
-data "aws_iam_policy_document" "github_actions_permissions" {
-  statement {
-    effect    = "Allow"
-    actions   = ["*"]
-    resources = ["*"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "aws:RequestedRegion"
-      values   = ["eu-west-1"] # limite au moins à ta région
-    }
-  }
-}
-
-resource "aws_iam_policy" "github_actions" {
-  name   = "${var.app_name}-github-actions-policy"
-  policy = data.aws_iam_policy_document.github_actions_permissions.json
-}
-
 resource "aws_iam_role_policy_attachment" "github_actions" {
   role       = aws_iam_role.github_actions.name
-  policy_arn = aws_iam_policy.github_actions.arn
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
 resource "local_file" "values" {
