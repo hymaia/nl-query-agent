@@ -121,21 +121,14 @@ resource "aws_iam_role" "github_actions" {
 data "aws_iam_policy_document" "github_actions_permissions" {
   statement {
     effect    = "Allow"
-    actions   = ["ecr:GetAuthorizationToken"]
+    actions   = ["*"]
     resources = ["*"]
-  }
 
-  statement {
-    effect = "Allow"
-    actions = [
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:PutImage",
-      "ecr:InitiateLayerUpload",
-      "ecr:UploadLayerPart",
-      "ecr:CompleteLayerUpload",
-      "ecr:BatchGetImage",
-    ]
-    resources = [aws_ecr_repository.app.arn]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:RequestedRegion"
+      values   = ["eu-west-1"] # limite au moins à ta région
+    }
   }
 }
 
