@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nl-query-agent-dev
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/hymaia/nl-query-agent
+    targetRevision: main
+    path: helm
+    helm:
+      values: |
+        image:
+          tag: "<IMAGE_TAG>"
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nl-query-agent-dev
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
