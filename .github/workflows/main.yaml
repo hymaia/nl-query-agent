@@ -80,7 +80,7 @@ jobs:
         run: |
           git fetch origin env/dev
           git checkout env/dev
-          sed -i "s/tag:.*/tag: \"$IMAGE_TAG\"/" dev-argo-app.yaml
+          git show origin/main:dev-argo-app.yaml | sed "s/tag:.*/tag: \"$IMAGE_TAG\"/" > dev-argo-app.yaml
           git config user.email "ci@github.com"
           git config user.name "GitHub Actions"
           git add dev-argo-app.yaml
