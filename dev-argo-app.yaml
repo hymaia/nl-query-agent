@@ -13,7 +13,7 @@ spec:
     helm:
       values: |
         image:
-          tag: "af0e555b5d07427402ba702bdba508cbfac93c12"
+          tag: "f30edfb3c28b0b6dc4679c3829554be96a7e6591"
 
   destination:
     server: https://kubernetes.default.svc
