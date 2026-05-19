@@ -13,11 +13,11 @@ spec:
     helm:
       values: |
         image:
-          tag: "c7b70fd14d841fc841aea11b41f56c47124cee65"
+          tag: "f12efef4ec9dbb5503732573ade6435181c5e5c0"
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: nl-query-agent-dev
+    namespace: agent
 
   syncPolicy:
     automated:
