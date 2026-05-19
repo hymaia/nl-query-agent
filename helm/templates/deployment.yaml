@@ -23,9 +23,9 @@ spec:
     metadata:
       labels:
         {{- include "nlq-agent.selectorLabels" . | nindent 8 }}
-          {{- with .Values.deployment.podLabels }}
-          {{- toYaml . | nindent 8 }}
-          {{- end }}
+        {{- with .Values.deployment.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- with .Values.deployment.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
@@ -119,7 +119,8 @@ spec:
 # ============================================================
 # HorizontalPodAutoscaler (optionnel)
 # ============================================================
-  {{- if .Values.autoscaling.enabled }}
+{{- if .Values.autoscaling.enabled }}
+---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -141,4 +142,4 @@ spec:
         target:
           type: Utilization
           averageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
-  {{- end }}
+{{- end }}
