@@ -7,7 +7,7 @@ on:
 
 env:
   AWS_REGION: eu-west-1
-  ECR_REPOSITORY: nl-sql-agent
+  ECR_REPOSITORY: nl-query-agent
 
 jobs:
   # ============================================================
@@ -26,7 +26,7 @@ jobs:
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::<ACCOUNT_ID>:role/<GITHUB_ACTIONS_ROLE>
+          role-to-assume: arn:aws:iam::662195598891:role/hyma-mds-nl-query-agent-role
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Setup Terraform
@@ -59,7 +59,7 @@ jobs:
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::<ACCOUNT_ID>:role/<GITHUB_ACTIONS_ROLE>
+          role-to-assume: arn:aws:iam::662195598891:role/hyma-mds-nl-query-agent-role
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to ECR

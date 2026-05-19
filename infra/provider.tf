@@ -3,16 +3,19 @@ terraform {
 
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
-      version = ">= 6.45.0"
+      source = "hashicorp/aws"
+    }
+    awscc = {
+      source  = "hashicorp/awscc"
+      version = "1.60.0"
     }
   }
 
   backend "s3" {
-    bucket         = "hyma-kube-terraform-state-management-dev"
-    key            = "nl-query-agent/terraform.tfstate"
-    region         = "eu-west-1"
-    encrypt        = true
+    bucket  = "hyma-kube-terraform-state-management-dev"
+    key     = "nl-query-agent/terraform.tfstate"
+    region  = "eu-west-1"
+    encrypt = true
   }
 }
 

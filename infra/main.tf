@@ -1,5 +1,9 @@
 data "aws_caller_identity" "current" {}
 
+data "aws_acm_certificate" "fcussac_app" {
+  domain = "fcussac.app.hymaia.com"
+}
+
 # ==============================================================
 # ECR
 # ==============================================================
@@ -48,13 +52,6 @@ resource "aws_ecr_lifecycle_policy" "app" {
 # ==============================================================
 
 # ==============================================================
-# Athena — récupération du workgroup existant
-# ==============================================================
-data "aws_athena_workgroup" "existing" {
-  name = var.athena_workgroup
-}
-
-# ==============================================================
 # IAM Role Pod — géré par la data platform
 # ==============================================================
 data "aws_iam_role" "pod" {
@@ -82,10 +79,6 @@ resource "aws_iam_role_policy_attachment" "pod" {
 # ==============================================================
 # IAM Role — GitHub Actions (OIDC)
 # ==============================================================
-data "aws_iam_openid_connect_provider" "github" {
-  url = "https://token.actions.githubusercontent.com"
-}
-
 data "aws_iam_policy_document" "github_actions_assume_role" {
   statement {
     effect  = "Allow"
@@ -93,7 +86,7 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
 
     principals {
       type        = "Federated"
-      identifiers = [data.aws_iam_openid_connect_provider.github.arn]
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/token.actions.githubusercontent.com"]
     }
 
     condition {
@@ -159,8 +152,7 @@ resource "local_file" "values" {
     glue_database        = var.glue_database
     athena_output_bucket = var.athena_output_bucket
     athena_workgroup     = var.athena_workgroup
-    ingress_host         = var.ingress_host
-    certificate_arn      = var.certificate_arn
+    certificate_arn      = data.aws_acm_certificate.fcussac_app.arn
   })
   filename = "${path.module}/../helm/values.yaml"
 }

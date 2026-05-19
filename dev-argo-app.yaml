@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: nl-sql-agent-dev
+  name: nl-query-agent-dev
   namespace: argocd
 spec:
   project: default
 
   source:
-    repoURL: https://github.com/<ORG>/repo-api
+    repoURL: https://github.com/hymaia/nl-query-agent
     targetRevision: main
     path: helm
     helm:
@@ -17,7 +17,7 @@ spec:
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: nl-sql-agent-dev
+    namespace: nl-query-agent-dev
 
   syncPolicy:
     automated:

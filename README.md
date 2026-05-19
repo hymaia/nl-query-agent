@@ -39,8 +39,8 @@ APP_PORT=8000
 Buildez et lancez le conteneur :
 
 ```bash
-docker build -t nl-sql-agent .
-docker run --env-file .env -p 8000:8000 nl-sql-agent
+docker build -t nl-query-agent .
+docker run --env-file .env -p 8000:8000 nl-query-agent
 ```
 
 L'API est accessible sur `http://localhost:8000`. La documentation Swagger est disponible sur `http://localhost:8000/docs`.
@@ -95,7 +95,7 @@ github_org              = "<GITHUB_ORG>"
 À chaque commit sur `main`, GitHub Actions :
 
 1. Build et pousse l'image Docker sur ECR avec le SHA du commit comme tag :
-   <ECR_REGISTRY>/nl-sql-agent:a1b2c3d4e5f6...
+   <ECR_REGISTRY>/nl-query-agent:a1b2c3d4e5f6...
 2. Met à jour le tag dans `dev-argo-app.yaml` sur la branche orpheline `env/dev`
 3. ArgoCD détecte le changement et synchronise automatiquement le cluster
 
@@ -103,7 +103,7 @@ Le SHA du commit comme tag garantit une traçabilité totale — depuis un pod K
 
 ```bash
 # retrouver le tag de l'image qui tourne
-kubectl get pod <pod-name> -n nl-sql-agent-dev -o jsonpath='{.spec.containers[0].image}'
+kubectl get pod <pod-name> -n nl-query-agent-dev -o jsonpath='{.spec.containers[0].image}'
 ```
 
 ### Construire et pousser l'image
@@ -117,8 +117,8 @@ La branche orpheline `env/dev` contient la ressource ArgoCD `dev-argo-app.yaml` 
 ### Vérifier le déploiement
 
 ```bash
-kubectl get pods -n nl-sql-agent-dev
-kubectl logs -f deployment/nl-sql-agent -n nl-sql-agent-dev
+kubectl get pods -n nl-query-agent-dev
+kubectl logs -f deployment/nl-query-agent -n nl-query-agent-dev
 ```
 
 ## Tester l'API déployée

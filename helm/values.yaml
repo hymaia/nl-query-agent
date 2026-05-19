@@ -4,28 +4,28 @@ nameOverride: ""
 fullnameOverride: ""
 
 image:
-  repository: ${ecr_repository_url}
+  repository: 662195598891.dkr.ecr.eu-west-1.amazonaws.com/nl-query-agent
   tag: "latest"
   pullPolicy: IfNotPresent
 
 serviceAccount:
-  iamRoleArn: "${pod_iam_role_arn}"
+  iamRoleArn: "arn:aws:iam::662195598891:role/hyma-mds-nl-query-agent-role"
   automountToken: true
   annotations: {}
 
 aws:
-  region: "${aws_region}"
+  region: "eu-west-1"
 
 bedrock:
-  modelId: "${bedrock_model_id}"
+  modelId: "anthropic.claude-sonnet-4-5"
   maxTokens: 4096
 
 glue:
-  database: "${glue_database}"
+  database: "hymaia_datalake_raw"
 
 athena:
-  outputBucket: "${athena_output_bucket}"
-  workgroup: "${athena_workgroup}"
+  outputBucket: "s3://raw-athena-results/output"
+  workgroup: "hymaia-datalake-agent-workgroup"
 
 app:
   env: "production"
@@ -104,7 +104,7 @@ ingress:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/certificate-arn: "${certificate_arn}"
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:eu-west-1:662195598891:certificate/ce9e8ffd-1985-499b-999c-341218134e42"
 
 autoscaling:
   enabled: false

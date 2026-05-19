@@ -21,7 +21,7 @@ def setup_uvicorn_json_logging() -> None:
 
 
 def setup_logger() -> logging.Logger:
-    logger = logging.getLogger("nl-sql-agent")
+    logger = logging.getLogger("nl-query-agent")
     logger.setLevel(settings.log_level.upper())
 
     if not logger.handlers:
