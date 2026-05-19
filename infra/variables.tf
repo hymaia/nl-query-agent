@@ -49,5 +49,5 @@ variable "athena_output_bucket" {
 variable "bedrock_model_id" {
   description = "Bedrock model ID"
   type        = string
-  default     = "eu.anthropic.claude-sonnet-4-5-20250929-v1:0"
+  default     = "anthropic.claude-3-haiku-20240307-v1:0"
 }
