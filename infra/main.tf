@@ -58,7 +58,7 @@ data "aws_iam_policy_document" "pod_permissions" {
   statement {
     effect    = "Allow"
     actions   = ["bedrock:InvokeModel"]
-    resources = ["arn:aws:bedrock:${var.aws_region}::foundation-model/anthropic.claude-sonnet-4-5"]
+    resources = ["arn:aws:bedrock:eu-west-1::foundation-model/anthropic.claude-sonnet-4-5-20250929-v1:0"]
   }
 }
 
