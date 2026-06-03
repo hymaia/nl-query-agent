@@ -58,7 +58,10 @@ data "aws_iam_policy_document" "pod_permissions" {
   statement {
     effect    = "Allow"
     actions   = ["bedrock:InvokeModel"]
-    resources = ["arn:aws:bedrock:*:${data.aws_caller_identity.current.account_id}:inference-profile/${var.bedrock_model_id}"]
+    resources = [
+      "arn:aws:bedrock:*:${data.aws_caller_identity.current.account_id}:inference-profile/${var.bedrock_model_id}",
+      "arn:aws:bedrock:*::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0",
+    ]
   }
 }
 
